@@ -13,6 +13,7 @@
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidDexTool>d8</AndroidDexTool>
     <AndroidLinkTool>r8</AndroidLinkTool>
+    <ReleaseVersion>2.5</ReleaseVersion>
   </PropertyGroup>
   
   <ItemGroup>
