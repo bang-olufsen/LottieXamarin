@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+<<<<<<< HEAD
     <TargetFramework>monoandroid12.0;net6.0-android</TargetFramework>
+=======
+    <TargetFrameworks>net8.0-android</TargetFrameworks>
+>>>>>>> 2ea230f92e5b5c73b1f4fc47fa3539828f9bd652
     <AssemblyName>Lottie.Android</AssemblyName>
     <RootNamespace>Lottie.Android</RootNamespace>
     <Description>Render After Effects animations natively on Android, iOS, MacOS, TVOs and UWP</Description>
