@@ -37,7 +37,6 @@
     </XamMacArch>
     <NoWarn>
     </NoWarn>
-    <LangVersion>Default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -61,7 +60,6 @@
     </XamMacArch>
     <NoWarn>
     </NoWarn>
-    <LangVersion>Default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
