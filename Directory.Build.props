@@ -68,7 +68,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Roslynator.Analyzers" Version="4.2.0">
+    <PackageReference Include="Roslynator.Analyzers" Version="4.12.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -76,7 +76,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="IDisposableAnalyzers" Version="4.0.2">
+    <PackageReference Include="IDisposableAnalyzers" Version="4.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
