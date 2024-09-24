@@ -130,17 +130,13 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Lottie.iOS\Lottie.iOS.csproj">
-      <Project>{8f0cc2b2-88e2-459b-ac92-f3a74071707e}</Project>
-      <Name>Lottie.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Example.Forms\Example.Forms.csproj">
-      <Project>{ba40e6bd-f568-4301-a402-3846f176d49e}</Project>
-      <Name>Example.Forms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Lottie.Forms\Lottie.Forms.csproj">
       <Project>{F03D2DD6-BBDA-45B9-982E-4DCA43FCB8E1}</Project>
       <Name>Lottie.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Example.Forms\Example.Forms.csproj">
+      <Project>{6920BAFF-A1AE-4E3F-A462-C91599817C59}</Project>
+      <Name>Example.Forms</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

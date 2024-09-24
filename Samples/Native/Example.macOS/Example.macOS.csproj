@@ -61,7 +61,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
     <Reference Include="Lottie.iOS">
-      <HintPath>..\..\..\Lottie.iOS\bin\Release\xamarin.mac20\Lottie.iOS.dll</HintPath>
+      <HintPath>..\..\..\Lottie.iOS\bin\$(Configuration)\net8.0-ios\Lottie.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
