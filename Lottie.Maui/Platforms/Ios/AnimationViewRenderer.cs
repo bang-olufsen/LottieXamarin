@@ -56,23 +56,19 @@ namespace Lottie.Forms.Platforms.Ios
 
                     e.NewElement.PlayCommand = new Command(() =>
                     {
-                        _animationView.PlayWithCompletion(AnimationCompletionBlock);
-                        e.NewElement.InvokePlayAnimation();
+                        PlayAnimation(e.NewElement);
                     });
                     e.NewElement.PauseCommand = new Command(() =>
                     {
-                        _animationView.Pause();
-                        e.NewElement.InvokePauseAnimation();
+                        PauseAnimation(e.NewElement);
                     });
                     e.NewElement.ResumeCommand = new Command(() =>
                     {
-                        _animationView.PlayWithCompletion(AnimationCompletionBlock);
-                        e.NewElement.InvokeResumeAnimation();
+                        ResumeAnimation(e.NewElement);
                     });
                     e.NewElement.StopCommand = new Command(() =>
                     {
-                        _animationView.Stop();
-                        e.NewElement.InvokeStopAnimation();
+                        StopAnimation(e.NewElement);
                     });
                     e.NewElement.ClickCommand = new Command(() =>
                     {
@@ -83,12 +79,12 @@ namespace Lottie.Forms.Platforms.Ios
                     e.NewElement.PlayMinAndMaxFrameCommand = new Command((object paramter) =>
                     {
                         if (paramter is (int minFrame, int maxFrame))
-                            _animationView.PlayFromFrame(NSNumber.FromInt32(minFrame), NSNumber.FromInt32(maxFrame), AnimationCompletionBlock);
+                            PlayAnimationFromFrame(e.NewElement, minFrame, maxFrame);
                     });
                     e.NewElement.PlayMinAndMaxProgressCommand = new Command((object paramter) =>
                     {
                         if (paramter is (float minProgress, float maxProgress))
-                            _animationView.PlayFromProgress(minProgress, maxProgress, AnimationCompletionBlock);
+                            PlayAnimationFromProgress(e.NewElement, minProgress, maxProgress);
                     });
                     e.NewElement.ReverseAnimationSpeedCommand = new Command(() => _animationView.AutoReverseAnimation = !_animationView.AutoReverseAnimation);
 
@@ -121,7 +117,9 @@ namespace Lottie.Forms.Platforms.Ios
                     SetNeedsLayout();
 
                     if (e.NewElement.AutoPlay || e.NewElement.IsAnimating)
-                        _animationView.PlayWithCompletion(AnimationCompletionBlock);
+                    {
+                        PlayAnimation(e.NewElement);
+                    }
 
                     //e.NewElement.Duration = TimeSpan.FromMilliseconds(_animationView.AnimationDuration);
                 }
@@ -141,7 +139,9 @@ namespace Lottie.Forms.Platforms.Ios
                 Element.InvokeAnimationLoaded(composition);
 
                 if (Element.AutoPlay || Element.IsAnimating)
-                    _animationView.PlayWithCompletion(AnimationCompletionBlock);
+                {
+                    PlayAnimation(Element);
+                }
             }
 
             if (e.PropertyName == AnimationView.CacheCompositionProperty.PropertyName)
@@ -188,34 +188,34 @@ namespace Lottie.Forms.Platforms.Ios
 
         private void AnimationCompletionBlock(bool animationFinished)
         {
+            // Can be null depending if the user callback is executed very quickly 
+            // and disposes the Xamarin.Forms page containing the Lottie view
+            if (_animationView == null || Element == null)
+                return;
+
             if (animationFinished)
             {
-                if (_animationView == null || Element == null)
-                    return;
-
                 Element.InvokeFinishedAnimation();
-
-                // Can be null depending if the user callback is executed very quickly 
-                // and disposes the Xamarin.Forms page containing the Lottie view
-                if (_animationView == null || Element == null)
-                    return;
 
                 if (Element.RepeatMode == RepeatMode.Infinite)
                 {
-                    Element.InvokeRepeatAnimation();
-                    _animationView.PlayWithCompletion(AnimationCompletionBlock);
+                    RepeatAnimation(Element);
+                    return;
                 }
-                else if (Element.RepeatMode == RepeatMode.Restart && repeatCount < Element.RepeatCount)
+                if (Element.RepeatMode == RepeatMode.Restart && repeatCount < Element.RepeatCount)
                 {
                     repeatCount++;
-                    Element.InvokeRepeatAnimation();
-                    _animationView.PlayWithCompletion(AnimationCompletionBlock);
+                    RepeatAnimation(Element);
+                    return;
                 }
-                else if (Element.RepeatMode == RepeatMode.Restart && repeatCount == Element.RepeatCount)
+                if (Element.RepeatMode == RepeatMode.Restart && repeatCount == Element.RepeatCount)
                 {
                     repeatCount = 1;
+                    return;
                 }
             }
+
+            Element.IsAnimating = _animationView.IsAnimationPlaying;
         }
 
         private void CleanupResources()
@@ -235,6 +235,55 @@ namespace Lottie.Forms.Platforms.Ios
                 _animationView.Dispose();
                 _animationView = null;
             }
+        }
+
+        private void PlayAnimation(AnimationView element)
+        {
+            _animationView.PlayWithCompletion(AnimationCompletionBlock);
+            element.IsAnimating = _animationView.IsAnimationPlaying;
+            element.InvokePlayAnimation();
+        }
+
+        private void PlayAnimationFromFrame(AnimationView element, int minFrame, int maxFrame)
+        {
+            _animationView.PlayFromFrame(NSNumber.FromInt32(minFrame), NSNumber.FromInt32(maxFrame), AnimationCompletionBlock);
+            element.IsAnimating = _animationView.IsAnimationPlaying;
+            element.InvokePlayAnimation();
+        }
+
+        private void PlayAnimationFromProgress(AnimationView element, float minProgress, float maxProgress)
+        {
+            _animationView.PlayFromProgress(minProgress, maxProgress, AnimationCompletionBlock);
+            element.IsAnimating = _animationView.IsAnimationPlaying;
+            element.InvokePlayAnimation();
+        }
+
+        private void RepeatAnimation(AnimationView element)
+        {
+            element.InvokeRepeatAnimation();
+            _animationView.PlayWithCompletion(AnimationCompletionBlock);
+            element.IsAnimating = _animationView.IsAnimationPlaying;
+        }
+
+        private void PauseAnimation(AnimationView element)
+        {
+            _animationView.Pause();
+            element.IsAnimating = _animationView.IsAnimationPlaying;
+            element.InvokePauseAnimation();
+        }
+
+        private void ResumeAnimation(AnimationView element)
+        {
+            _animationView.PlayWithCompletion(AnimationCompletionBlock);
+            element.IsAnimating = _animationView.IsAnimationPlaying;
+            element.InvokeResumeAnimation();
+        }
+
+        private void StopAnimation(AnimationView element)
+        {
+            _animationView.Stop();
+            element.IsAnimating = _animationView.IsAnimationPlaying;
+            element.InvokeStopAnimation();
         }
     }
 }
