@@ -12,7 +12,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <lottie:AnimationView Grid.Row="0"
+        <lottie:AnimationView
+          x:Name="Lottie"
+          Grid.Row="0"
                           Animation="animation_llq1y8ia.json"
                           AnimationSource="AssetOrBundle"
                           HeightRequest="200"
@@ -23,7 +25,7 @@
 
         <Button Grid.Row="1"
                 x:Name="CounterBtn"
-                Text="Click me"
+                Text="Pause"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Center" />

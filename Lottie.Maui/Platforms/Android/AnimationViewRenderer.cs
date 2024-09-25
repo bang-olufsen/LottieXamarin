@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using Android.Content;
-using Android.Runtime;
 using Com.Airbnb.Lottie;
 using Lottie.Forms;
 using Lottie.Forms.Platforms.Android;
@@ -45,31 +44,66 @@ namespace Lottie.Forms.Platforms.Android
             {
                 if (Control == null)
                 {
+                    _animationView?.Dispose();
                     _animationView = new LottieAnimationView(Context);
+
+                    _animatorListener?.Dispose();
                     _animatorListener = new AnimatorListener
                     {
-                        OnAnimationCancelImpl = () => e.NewElement.InvokeStopAnimation(),
-                        OnAnimationEndImpl = () => e.NewElement.InvokeFinishedAnimation(),
-                        OnAnimationPauseImpl = () => e.NewElement.InvokePauseAnimation(),
-                        OnAnimationRepeatImpl = () => e.NewElement.InvokeRepeatAnimation(),
-                        OnAnimationResumeImpl = () => e.NewElement.InvokeResumeAnimation(),
-                        OnAnimationStartImpl = () => e.NewElement.InvokePlayAnimation()
+                        OnAnimationCancelImpl = () =>
+                        {
+                            e.NewElement.IsAnimating = _animationView.IsAnimating;
+                            e.NewElement.InvokeStopAnimation();
+                        },
+                        OnAnimationEndImpl = () =>
+                        {
+                            e.NewElement.IsAnimating = _animationView.IsAnimating;
+                            e.NewElement.InvokeFinishedAnimation();
+                        },
+                        OnAnimationPauseImpl = () =>
+                        {
+                            e.NewElement.IsAnimating = _animationView.IsAnimating;
+                            e.NewElement.InvokePauseAnimation();
+                        },
+                        OnAnimationRepeatImpl = () =>
+                        {
+                            e.NewElement.IsAnimating = _animationView.IsAnimating;
+                            e.NewElement.InvokeRepeatAnimation();
+                        },
+                        OnAnimationResumeImpl = () =>
+                        {
+                            e.NewElement.IsAnimating = _animationView.IsAnimating;
+                            e.NewElement.InvokeResumeAnimation();
+                        },
+                        OnAnimationStartImpl = () =>
+                        {
+                            e.NewElement.IsAnimating = _animationView.IsAnimating;
+                            e.NewElement.InvokePlayAnimation();
+                        },
                     };
+
+                    _animatorUpdateListener?.Dispose();
                     _animatorUpdateListener = new AnimatorUpdateListener
                     {
-                        OnAnimationUpdateImpl = (progress) => e.NewElement.InvokeAnimationUpdate(progress)
+                        OnAnimationUpdateImpl = e.NewElement.InvokeAnimationUpdate
                     };
+
+                    _lottieOnCompositionLoadedListener?.Dispose();
                     _lottieOnCompositionLoadedListener = new LottieOnCompositionLoadedListener
                     {
-                        OnCompositionLoadedImpl = (composition) => e.NewElement.InvokeAnimationLoaded(composition)
+                        OnCompositionLoadedImpl = e.NewElement.InvokeAnimationLoaded
                     };
+
+                    _lottieFailureListener?.Dispose();
                     _lottieFailureListener = new LottieFailureListener
                     {
-                        OnResultImpl = (exception) => e.NewElement.InvokeFailure(exception)
+                        OnResultImpl = e.NewElement.InvokeFailure
                     };
+
+                    _clickListener?.Dispose();
                     _clickListener = new ClickListener
                     {
-                        OnClickImpl = () => e.NewElement.InvokeClick()
+                        OnClickImpl = e.NewElement.InvokeClick
                     };
 
                     _animationView.AddAnimatorListener(_animatorListener);
@@ -80,14 +114,10 @@ namespace Lottie.Forms.Platforms.Android
 
                     _animationView.TrySetAnimation(e.NewElement);
 
-                    e.NewElement.PlayCommand = new Command(() => _animationView.PlayAnimation());
-                    e.NewElement.PauseCommand = new Command(() => _animationView.PauseAnimation());
-                    e.NewElement.ResumeCommand = new Command(() => _animationView.ResumeAnimation());
-                    e.NewElement.StopCommand = new Command(() =>
-                    {
-                        _animationView.CancelAnimation();
-                        _animationView.Progress = 0.0f;
-                    });
+                    e.NewElement.PlayCommand = new Command(() => PlayAnimation(e.NewElement));
+                    e.NewElement.PauseCommand = new Command(() => PauseAnimation(e.NewElement));
+                    e.NewElement.ResumeCommand = new Command(() => ResumeAnimation(e.NewElement));
+                    e.NewElement.StopCommand = new Command(() => StopAnimation(e.NewElement));
                     e.NewElement.ClickCommand = new Command(() => _animationView.PerformClick());
 
                     e.NewElement.PlayMinAndMaxFrameCommand = new Command((object paramter) =>
@@ -95,7 +125,7 @@ namespace Lottie.Forms.Platforms.Android
                         if (paramter is (int minFrame, int maxFrame))
                         {
                             _animationView.SetMinAndMaxFrame(minFrame, maxFrame);
-                            _animationView.PlayAnimation();
+                            PlayAnimation(e.NewElement);
                         }
                     });
                     e.NewElement.PlayMinAndMaxProgressCommand = new Command((object paramter) =>
@@ -103,7 +133,7 @@ namespace Lottie.Forms.Platforms.Android
                         if (paramter is (float minProgress, float maxProgress))
                         {
                             _animationView.SetMinAndMaxProgress(minProgress, maxProgress);
-                            _animationView.PlayAnimation();
+                            PlayAnimation(e.NewElement);
                         }
                     });
                     e.NewElement.ReverseAnimationSpeedCommand = new Command(() => _animationView.ReverseAnimationSpeed());
@@ -139,7 +169,7 @@ namespace Lottie.Forms.Platforms.Android
                     SetNativeControl(_animationView);
 
                     if (e.NewElement.AutoPlay || e.NewElement.IsAnimating)
-                        _animationView.PlayAnimation();
+                        PlayAnimation(e.NewElement);
 
                     e.NewElement.Duration = _animationView.Duration;
                     e.NewElement.IsAnimating = _animationView.IsAnimating;
@@ -157,7 +187,7 @@ namespace Lottie.Forms.Platforms.Android
                 _animationView.TrySetAnimation(Element);
 
                 if (Element.AutoPlay || Element.IsAnimating)
-                    _animationView.PlayAnimation();
+                    PlayAnimation(Element);
             }
 
             //if (e.PropertyName == AnimationView.AutoPlayProperty.PropertyName)
@@ -208,6 +238,32 @@ namespace Lottie.Forms.Platforms.Android
 
             base.OnElementPropertyChanged(sender, e);
         }
+
+        private void PlayAnimation(AnimationView element)
+        {
+            _animationView.PlayAnimation();
+            element.IsAnimating = _animationView.IsAnimating;
+        }
+
+        private void PauseAnimation(AnimationView element)
+        {
+            _animationView.PauseAnimation();
+            element.IsAnimating = _animationView.IsAnimating;
+        }
+
+        private void ResumeAnimation(AnimationView element)
+        {
+            _animationView.ResumeAnimation();
+            element.IsAnimating = _animationView.IsAnimating;
+        }
+
+        private void StopAnimation(AnimationView element)
+        {
+            _animationView.CancelAnimation();
+            _animationView.Progress = 0.0f;
+            element.IsAnimating = _animationView.IsAnimating;
+        }
+
     }
 #pragma warning restore 0618
 }

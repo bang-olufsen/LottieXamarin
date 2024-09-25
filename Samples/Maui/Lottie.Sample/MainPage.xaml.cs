@@ -11,12 +11,17 @@
 
         private void OnCounterClicked(object sender, EventArgs e)
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
+            Lottie.AutoPlay = false;
+            if (Lottie.IsAnimating)
+            {
+                Lottie.PauseAnimation();
+                CounterBtn.Text = "Play";
+            }
             else
-                CounterBtn.Text = $"Clicked {count} times";
+            {
+                Lottie.ResumeAnimation();
+                CounterBtn.Text = "Pause";
+            }
 
             SemanticScreenReader.Announce(CounterBtn.Text);
         }
