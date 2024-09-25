@@ -86,7 +86,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.TVOS" />
     <Reference Include="Lottie.iOS">
-      <HintPath>..\..\..\Lottie.iOS\bin\Debug\xamarin.tvos10\Lottie.iOS.dll</HintPath>
+      <HintPath>..\..\..\Lottie.iOS\bin\$(Configuration)\net8.0-ios\Lottie.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

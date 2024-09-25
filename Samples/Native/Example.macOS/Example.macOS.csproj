@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <EnableCodeSigning>false</EnableCodeSigning>
+    <EnableCodeSigning>False</EnableCodeSigning>
     <CodeSigningKey>Mac Developer</CodeSigningKey>
     <CreatePackage>false</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
@@ -43,7 +43,7 @@
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <EnableCodeSigning>false</EnableCodeSigning>
+    <EnableCodeSigning>False</EnableCodeSigning>
     <CreatePackage>true</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
     <IncludeMonoRuntime>true</IncludeMonoRuntime>
@@ -61,7 +61,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
     <Reference Include="Lottie.iOS">
-      <HintPath>..\..\..\Lottie.iOS\bin\Release\xamarin.mac20\Lottie.iOS.dll</HintPath>
+      <HintPath>..\..\..\Lottie.iOS\bin\$(Configuration)\net8.0-ios\Lottie.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

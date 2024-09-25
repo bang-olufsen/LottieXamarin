@@ -9,6 +9,7 @@
     <RootNamespace>LottieSamples.iOS</RootNamespace>
     <AssemblyName>LottieSamples.iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <ReleaseVersion>2.5</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -84,7 +85,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
     <Reference Include="Lottie.iOS">
-      <HintPath>..\..\..\Lottie.iOS\bin\Debug\xamarin.ios10\Lottie.iOS.dll</HintPath>
+      <HintPath>..\..\..\Lottie.iOS\bin\$(Configuration)\net8.0-ios\Lottie.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

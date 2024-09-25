@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <!--<TargetFrameworks>net8.0-ios;net8.0-maccatalyst</TargetFrameworks>-->
     <TargetFrameworks>net8.0-ios</TargetFrameworks>
     <AssemblyName>Lottie.iOS</AssemblyName>
     <RootNamespace>Lottie.iOS</RootNamespace>
@@ -10,6 +9,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <IsBindingProject>true</IsBindingProject>
     <Version>2.6.0</Version>
+    <ReleaseVersion>2.5</ReleaseVersion>
   </PropertyGroup>
   
   <ItemGroup>
