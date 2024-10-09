@@ -25,7 +25,6 @@
 
   <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
     <ObjcBindingApiDefinition Include="ApiDefinitions.Ios.cs" />
-    <ObjcBindingNativeLibrary Include="libLottie-ios.a" />
     <Compile Include="libLottie-ios.linkwith.cs">
       <DependentUpon>libLottie-ios.a</DependentUpon>
     </Compile>
@@ -33,7 +32,6 @@
 
   <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
     <ObjcBindingApiDefinition Include="ApiDefinitions.Mac.cs" />
-    <ObjcBindingNativeLibrary Include="libLottie-macos.a" />
     <Compile Include="libLottie-macos.linkwith.cs">
       <DependentUpon>libLottie-macos.a</DependentUpon>
     </Compile>
@@ -41,7 +39,6 @@
 
   <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tvos'">
     <ObjcBindingApiDefinition Include="ApiDefinitions.Ios.cs" />
-    <ObjcBindingNativeLibrary Include="libLottie-tvos.a" />
     <Compile Include="libLottie-tvos.linkwith.cs">
       <DependentUpon>libLottie-tvos.a</DependentUpon>
     </Compile>
@@ -50,4 +47,18 @@
   <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'watchos'">
   </ItemGroup>
 
+  <ItemGroup>
+    <NativeReference Include="..\Lottie.iOS\libLottie-ios.a">
+      <Kind>Static</Kind>
+      <SmartLink>true</SmartLink>
+    </NativeReference>
+    <NativeReference Include="..\Lottie.iOS\libLottie-macos.a">
+      <Kind>Static</Kind>
+      <SmartLink>true</SmartLink>
+    </NativeReference>
+    <NativeReference Include="..\Lottie.iOS\libLottie-tvos.a">
+      <Kind>Static</Kind>
+      <SmartLink>true</SmartLink>
+    </NativeReference>
+  </ItemGroup>
 </Project>
